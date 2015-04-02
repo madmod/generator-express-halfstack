@@ -1,5 +1,5 @@
 Description:
-    Creates an full-stack AngularJS + Node app
+    Creates an Express API server
 
 Example:
-    yo angular-fullstack
+    yo express-halfstack

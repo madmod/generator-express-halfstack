@@ -11,11 +11,11 @@ module.exports = function (grunt) {
 
   // Load grunt tasks automatically, when needed
   require('jit-grunt')(grunt, {
-    express: 'grunt-express-server',
+    express: 'grunt-express-server',<% if(filters.fullstack) { %>
     useminPrepare: 'grunt-usemin',
     ngtemplates: 'grunt-angular-templates',
     cdnify: 'grunt-google-cdn',
-    protractor: 'grunt-protractor-runner',
+    protractor: 'grunt-protractor-runner',<% } %>
     buildcontrol: 'grunt-build-control'
   });
 
@@ -28,8 +28,10 @@ module.exports = function (grunt) {
     // Project settings
     pkg: grunt.file.readJSON('package.json'),
     yeoman: {
+      <% if(filters.fullstack) { %>
       // configurable paths
       client: require('./bower.json').appPath || 'client',
+      <% } %>
       dist: 'dist'
     },
     express: {
@@ -47,13 +49,13 @@ module.exports = function (grunt) {
           script: 'dist/server/app.js'
         }
       }
-    },
+    },<% if(filters.fullstack) { %>
     open: {
       server: {
         url: 'http://localhost:<%%= express.options.port %>'
       }
-    },
-    watch: {
+    },<% } %>
+    watch: {<% if(filters.fullstack) { %>
       injectJS: {
         files: [
           '<%%= yeoman.client %>/{app,components}/**/*.js',
@@ -67,11 +69,11 @@ module.exports = function (grunt) {
           '<%%= yeoman.client %>/{app,components}/**/*.css'
         ],
         tasks: ['injector:css']
-      },
+      },<% } %>
       mochaTest: {
         files: ['server/**/*.spec.js'],
         tasks: ['env:test', 'mochaTest']
-      },
+      },<% if(filters.fullstack) { %>
       jsTest: {
         files: [
           '<%%= yeoman.client %>/{app,components}/**/*.spec.js',
@@ -127,10 +129,10 @@ module.exports = function (grunt) {
           '<%%= yeoman.client %>/{app,components}/**/*.spec.{coffee,litcoffee,coffee.md}'
         ],
         tasks: ['karma']
-      },<% } %>
+      },<% } %><% } %>
       gruntfile: {
         files: ['Gruntfile.js']
-      },
+      },<% if(filters.fullstack) { %>
       livereload: {
         files: [
           '{.tmp,<%%= yeoman.client %>}/{app,components}/**/*.css',
@@ -143,14 +145,14 @@ module.exports = function (grunt) {
         options: {
           livereload: true
         }
-      },
+      },<% } %>
       express: {
         files: [
           'server/**/*.{js,json}'
         ],
         tasks: ['express:dev', 'wait'],
-        options: {
-          livereload: true,
+        options: {<% if(filters.fullstack) { %>
+          livereload: true,<% } %>
           nospawn: true //Without this option specified express won't be reloaded
         }
       }
@@ -158,8 +160,8 @@ module.exports = function (grunt) {
 
     // Make sure code styles are up to par and there are no obvious mistakes
     jshint: {
-      options: {
-        jshintrc: '<%%= yeoman.client %>/.jshintrc',
+      options: {<% if(filters.fullstack) { %>
+        jshintrc: '<%%= yeoman.client %>/.jshintrc',<% } %>
         reporter: require('jshint-stylish')
       },
       server: {
@@ -176,7 +178,7 @@ module.exports = function (grunt) {
           jshintrc: 'server/.jshintrc-spec'
         },
         src: ['server/**/*.spec.js']
-      },
+      },<% if(filters.fullstack) { %>
       all: [
         '<%%= yeoman.client %>/{app,components}/**/*.js',
         '!<%%= yeoman.client %>/{app,components}/**/*.spec.js',
@@ -187,7 +189,7 @@ module.exports = function (grunt) {
           '<%%= yeoman.client %>/{app,components}/**/*.spec.js',
           '<%%= yeoman.client %>/{app,components}/**/*.mock.js'
         ]
-      }
+      }<% } %>
     },
 
     // Empties folders to start fresh
@@ -205,7 +207,7 @@ module.exports = function (grunt) {
         }]
       },
       server: '.tmp'
-    },
+    },<% if(filters.fullstack) { %>
 
     // Add vendor prefixed styles
     autoprefixer: {
@@ -220,7 +222,7 @@ module.exports = function (grunt) {
           dest: '.tmp/'
         }]
       }
-    },
+    },<% } %>
 
     // Debugging with node inspector
     'node-inspector': {
@@ -254,7 +256,7 @@ module.exports = function (grunt) {
           }
         }
       }
-    },
+    },<% if(filters.fullstack) { %>
 
     // Automatically inject Bower components into the app
     wiredep: {
@@ -377,44 +379,48 @@ module.exports = function (grunt) {
       dist: {
         html: ['<%%= yeoman.dist %>/public/*.html']
       }
-    },
+    },<% } %>
 
     // Copies remaining files to places other tasks can use
     copy: {
       dist: {
-        files: [{
-          expand: true,
-          dot: true,
-          cwd: '<%%= yeoman.client %>',
-          dest: '<%%= yeoman.dist %>/public',
-          src: [
-            '*.{ico,png,txt}',
-            '.htaccess',
-            'bower_components/**/*',
-            'assets/images/{,*/}*.{webp}',
-            'assets/fonts/**/*',
-            'index.html'
-          ]
-        }, {
-          expand: true,
-          cwd: '.tmp/images',
-          dest: '<%%= yeoman.dist %>/public/assets/images',
-          src: ['generated/*']
-        }, {
-          expand: true,
-          dest: '<%%= yeoman.dist %>',
-          src: [
-            'package.json',
-            'server/**/*'
-          ]
-        }]
-      },
+        files: [<% if(filters.fullstack) { %>
+          {
+            expand: true,
+            dot: true,
+            cwd: '<%%= yeoman.client %>',
+            dest: '<%%= yeoman.dist %>/public',
+            src: [
+              '*.{ico,png,txt}',
+              '.htaccess',
+              'bower_components/**/*',
+              'assets/images/{,*/}*.{webp}',
+              'assets/fonts/**/*',
+              'index.html'
+            ]
+          },
+          {
+            expand: true,
+            cwd: '.tmp/images',
+            dest: '<%%= yeoman.dist %>/public/assets/images',
+            src: ['generated/*']
+          },<% } %>
+          {
+            expand: true,
+            dest: '<%%= yeoman.dist %>',
+            src: [
+              'package.json',
+              'server/**/*'
+            ]
+          }
+        ]
+      },<% if(filters.fullstack) { %>
       styles: {
         expand: true,
         cwd: '<%%= yeoman.client %>',
         dest: '.tmp/',
         src: ['{app,components}/**/*.css']
-      }
+      }<% } %>
     },
 
     buildcontrol: {
@@ -440,7 +446,7 @@ module.exports = function (grunt) {
     },
 
     // Run some tasks in parallel to speed up the build process
-    concurrent: {
+    concurrent: {<% if(filters.fullstack) { %>
       server: [<% if(filters.coffee) { %>
         'coffee',<% } %><% if(filters.jade) { %>
         'jade',<% } %><% if(filters.stylus) { %>
@@ -454,7 +460,7 @@ module.exports = function (grunt) {
         'stylus',<% } %><% if(filters.sass) { %>
         'sass',<% } %><% if(filters.less) { %>
         'less',<% } %>
-      ],
+      ],<% } %>
       debug: {
         tasks: [
           'nodemon',
@@ -463,7 +469,7 @@ module.exports = function (grunt) {
         options: {
           logConcurrentOutput: true
         }
-      },
+      },<% if(filters.fullstack) { %>
       dist: [<% if(filters.coffee) { %>
         'coffee',<% } %><% if(filters.jade) { %>
         'jade',<% } %><% if(filters.stylus) { %>
@@ -472,8 +478,8 @@ module.exports = function (grunt) {
         'less',<% } %>
         'imagemin',
         'svgmin'
-      ]
-    },
+      ]<% } %>
+    },<% if(filters.fullstack) { %>
 
     // Test settings
     karma: {
@@ -481,14 +487,14 @@ module.exports = function (grunt) {
         configFile: 'karma.conf.js',
         singleRun: true
       }
-    },
+    },<% } %>
 
     mochaTest: {
       options: {
         reporter: 'spec'
       },
       src: ['server/**/*.spec.js']
-    },
+    },<% if(filters.fullstack) { %>
 
     protractor: {
       options: {
@@ -501,7 +507,7 @@ module.exports = function (grunt) {
           }
         }
       }
-    },
+    },<% } %>
 
     env: {
       test: {
@@ -511,7 +517,7 @@ module.exports = function (grunt) {
         NODE_ENV: 'production'
       },
       all: localConfig
-    },<% if(filters.jade) { %>
+    },<% if(filters.fullstack) { %><% if(filters.jade) { %>
 
     // Compiles Jade to html
     jade: {
@@ -702,8 +708,8 @@ module.exports = function (grunt) {
           ]
         }
       }
-    },
-  });
+    },<% } %>
+  });<% if(filters.fullstack) { %>
 
   // Used for delaying livereload until after server has restarted
   grunt.registerTask('wait', function () {
@@ -715,7 +721,7 @@ module.exports = function (grunt) {
       grunt.log.writeln('Done waiting!');
       done();
     }, 1500);
-  });
+  });<% } %>
 
   grunt.registerTask('express-keepalive', 'Keep grunt running', function() {
     this.async();
@@ -723,37 +729,37 @@ module.exports = function (grunt) {
 
   grunt.registerTask('serve', function (target) {
     if (target === 'dist') {
-      return grunt.task.run(['build', 'env:all', 'env:prod', 'express:prod', 'wait', 'open', 'express-keepalive']);
+      return grunt.task.run(['build', 'env:all', 'env:prod', 'express:prod', <% if(filters.fullstack) { %>'wait', 'open',<% } %> 'express-keepalive']);
     }
 
     if (target === 'debug') {
       return grunt.task.run([
         'clean:server',
-        'env:all',<% if(filters.stylus) { %>
+        'env:all',<% if(filters.fullstack) { %><% if(filters.stylus) { %>
         'injector:stylus', <% } %><% if(filters.less) { %>
         'injector:less', <% } %><% if(filters.sass) { %>
-        'injector:sass', <% } %>
-        'concurrent:server',
+        'injector:sass', <% } %><% } %>
+        'concurrent:server',<% if(filters.fullstack) { %>
         'injector',
         'wiredep',
-        'autoprefixer',
+        'autoprefixer',<% } %>
         'concurrent:debug'
       ]);
     }
 
     grunt.task.run([
       'clean:server',
-      'env:all',<% if(filters.stylus) { %>
+      'env:all',<% if(filters.fullstack) { %><% if(filters.stylus) { %>
       'injector:stylus', <% } %><% if(filters.less) { %>
       'injector:less', <% } %><% if(filters.sass) { %>
-      'injector:sass', <% } %>
-      'concurrent:server',
+      'injector:sass', <% } %><% } %>
+      'concurrent:server',<% if(filters.fullstack) { %>
       'injector',
       'wiredep',
-      'autoprefixer',
-      'express:dev',
+      'autoprefixer',<% } %>
+      'express:dev',<% if(filters.fullstack) { %>
       'wait',
-      'open',
+      'open',<% } %>
       'watch'
     ]);
   });
@@ -770,7 +776,7 @@ module.exports = function (grunt) {
         'env:test',
         'mochaTest'
       ]);
-    }
+    }<% if(filters.fullstack) { %>
 
     else if (target === 'client') {
       return grunt.task.run([
@@ -801,7 +807,7 @@ module.exports = function (grunt) {
         'express:dev',
         'protractor'
       ]);
-    }
+    }<% } %>
 
     else grunt.task.run([
       'test:server',
@@ -810,24 +816,24 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('build', [
-    'clean:dist',<% if(filters.stylus) { %>
+    'clean:dist',<% if(filters.fullstack) { %><% if(filters.stylus) { %>
     'injector:stylus', <% } %><% if(filters.less) { %>
     'injector:less', <% } %><% if(filters.sass) { %>
-    'injector:sass', <% } %>
-    'concurrent:dist',
+    'injector:sass', <% } %><% } %>
+    'concurrent:dist',<% if(filters.fullstack) { %>
     'injector',
     'wiredep',
     'useminPrepare',
     'autoprefixer',
     'ngtemplates',
     'concat',
-    'ngAnnotate',
-    'copy:dist',
+    'ngAnnotate',<% } %>
+    'copy:dist',<% if(filters.fullstack) { %>
     'cdnify',
     'cssmin',
     'uglify',
     'rev',
-    'usemin'
+    'usemin'<% } %>
   ]);
 
   grunt.registerTask('default', [

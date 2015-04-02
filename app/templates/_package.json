@@ -12,9 +12,9 @@
     "express-session": "~1.0.2",
     "errorhandler": "~1.0.0",
     "compression": "~1.0.1",
-    "lodash": "~2.4.1",<% if(filters.jade) { %>
+    "lodash": "~2.4.1",<% if(filters.fullstack) { %><% if(filters.jade) { %>
     "jade": "~1.2.0",<% } %><% if(filters.html) { %>
-    "ejs": "~0.8.4",<% } %><% if(filters.mongoose) { %>
+    "ejs": "~0.8.4",<% } %><% } %><% if(filters.mongoose) { %>
     "mongoose": "~3.8.8",<% } %><% if(filters.auth) { %>
     "jsonwebtoken": "^0.3.0",
     "express-jwt": "^0.1.3",
@@ -23,53 +23,53 @@
     "passport-facebook": "latest",<% } %><% if(filters.twitterAuth) { %>
     "passport-twitter": "latest",<% } %><% if(filters.googleAuth) { %>
     "passport-google-oauth": "latest",<% } %>
-    "composable-middleware": "^0.3.0",
-    "connect-mongo": "^0.4.1"<% if(filters.socketio) { %>,
+    "composable-middleware": "^0.3.0",<% if(filters.fullstack) { %>
+    "connect-mongo": "^0.4.1"<% } %><% if(filters.socketio) { %>,
     "socket.io": "^1.0.6",
     "socket.io-client": "^1.0.6",
     "socketio-jwt": "^2.0.2"<% } %>
   },
   "devDependencies": {
-    "grunt": "~0.4.4",
+    "grunt": "~0.4.4",<% if(filters.fullstack) { %>
     "grunt-autoprefixer": "~0.7.2",
-    "grunt-wiredep": "~1.8.0",
+    "grunt-wiredep": "~1.8.0",<% } %>
     "grunt-concurrent": "~0.5.0",
-    "grunt-contrib-clean": "~0.5.0",
-    "grunt-contrib-concat": "~0.4.0",
-    "grunt-contrib-copy": "~0.5.0",
+    "grunt-contrib-clean": "~0.5.0",<% if(filters.fullstack) { %>
+    "grunt-contrib-concat": "~0.4.0",<% } %>
+    "grunt-contrib-copy": "~0.5.0",<% if(filters.fullstack) { %>
     "grunt-contrib-cssmin": "~0.9.0",
     "grunt-contrib-htmlmin": "~0.2.0",
-    "grunt-contrib-imagemin": "~0.7.1",
-    "grunt-contrib-jshint": "~0.10.0",
-    "grunt-contrib-uglify": "~0.4.0",
-    "grunt-contrib-watch": "~0.6.1",<% if(filters.coffee) { %>
+    "grunt-contrib-imagemin": "~0.7.1",<% } %>
+    "grunt-contrib-jshint": "~0.10.0",<% if(filters.fullstack) { %>
+    "grunt-contrib-uglify": "~0.4.0",<% } %>
+    "grunt-contrib-watch": "~0.6.1",<% if(filters.fullstack) { %><% if(filters.coffee) { %>
     "grunt-contrib-coffee": "^0.10.1",<% } %><% if(filters.jade) { %>
     "grunt-contrib-jade": "^0.11.0",<% } %><% if(filters.less) { %>
     "grunt-contrib-less": "^0.11.0",<% } %>
-    "grunt-google-cdn": "~0.4.0",
-    "grunt-newer": "~0.7.0",
+    "grunt-google-cdn": "~0.4.0",<% } %>
+    "grunt-newer": "~0.7.0",<% if(filters.fullstack) { %>
     "grunt-ng-annotate": "^0.2.3",
     "grunt-rev": "~0.1.0",
     "grunt-svgmin": "~0.4.0",
-    "grunt-usemin": "~2.1.1",
+    "grunt-usemin": "~2.1.1",<% } %>
     "grunt-env": "~0.4.1",
     "grunt-node-inspector": "~0.1.5",
-    "grunt-nodemon": "~0.2.0",
+    "grunt-nodemon": "~0.2.0",<% if(filters.fullstack) { %>
     "grunt-angular-templates": "^0.5.4",
     "grunt-dom-munger": "^3.4.0",
     "grunt-protractor-runner": "^1.1.0",
     "grunt-injector": "~0.5.4",
-    "grunt-karma": "~0.8.2",
+    "grunt-karma": "~0.8.2",<% } %>
     "grunt-build-control": "DaftMonk/grunt-build-control",
-    "grunt-mocha-test": "~0.10.2",<% if(filters.sass) { %>
+    "grunt-mocha-test": "~0.10.2",<% if(filters.fullstack) { %><% if(filters.sass) { %>
     "grunt-contrib-sass": "^0.7.3",<% } %><% if(filters.stylus) { %>
-    "grunt-contrib-stylus": "latest",<% } %>
+    "grunt-contrib-stylus": "latest",<% } %><% } %>
     "jit-grunt": "^0.5.0",
     "time-grunt": "~0.3.1",
-    "grunt-express-server": "~0.4.17",
+    "grunt-express-server": "~0.4.17",<% if(filters.fullstack) { %>
     "grunt-open": "~0.2.3",
-    "open": "~0.0.4",
-    "jshint-stylish": "~0.1.5",
+    "open": "~0.0.4",<% } %>
+    "jshint-stylish": "~0.1.5",<% if(filters.fullstack) { %>
     "connect-livereload": "~0.4.0",
     "karma-ng-scenario": "~0.1.0",
     "karma-firefox-launcher": "~0.1.3",
@@ -86,15 +86,15 @@
     "karma": "~0.12.9",
     "karma-ng-html2js-preprocessor": "~0.1.0",
     "supertest": "~0.11.0",
-    "should": "~3.3.1"
+    "should": "~3.3.1"<% } %>
   },
   "engines": {
     "node": ">=0.10.0"
   },
   "scripts": {
     "start": "node server/app.js",
-    "test": "grunt test",
-    "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"
+    "test": "grunt test",<% if(filters.fullstack) { %>
+    "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update"<% } %>
   },
   "private": true
 }
